@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Property List</h1>
-
-{% for property in properties %}
+<h1>Property Detail</h1>
   <div class="card">
     <div class="card-content">
-      <span class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.street }}</a></span>
+      <span class="card-title">{{ property.street }}</a></span>
       <p>This is a {{property.units}} unit {{ property.type }}</p>
       <p>Price: ${{ property.price }}</p>
       <p>City: {{ property.city }}</p>
@@ -15,6 +13,5 @@
       <p>Listing: <a href="{{ property.link }}">Click Here for Listing</a></p>
     </div>
   </div>
-{% endfor %}
 
 {% endblock %}
