@@ -1,17 +1,99 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Property Detail</h1>
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title">{{ property.street }}</a></span>
-      <p>This is a {{property.units}} unit {{ property.type }}</p>
-      <p>Price: ${{ property.price }}</p>
-      <p>City: {{ property.city }}</p>
-      <p>State: {{ property.state }}</p>
-      <p>{{ property.description }}</p>
-      <p>Listing: <a href="{{ property.link }}">Click Here for Listing</a></p>
+<h1>Property Details</h1>
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ property.street }}</a></span>
+        <p>This is a {{property.units}} unit {{ property.type }}</p>
+        <p>Price: ${{ property.price }}</p>
+        <p>City: {{ property.city }}</p>
+        <p>State: {{ property.state }}</p>
+        <p>{{ property.description }}</p>
+        <p>Listing: <a href="{{ property.link }}">Click Here for Listing</a></p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'properties_update' property.id %}">Edit</a>
+        <a href="{% url 'properties_delete' property.id %}">Delete</a>
+      </div>
     </div>
   </div>
+  <div class="col s6">
+    <form action="{% url 'add_showing' property.id %}" method="post">
+      {% csrf_token %}
+      {{ showing_form.as_p }}
+      <input type="submit" class="btn" value="Add Showing">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Showing</th></tr>
+      </thead>
+      <tbody>
+        {% for showing in property.showing_set.all %}
+          <tr>
+            <td>{{ showing.date }}</td>
+            <td>{{ showing.get_showing_display }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ property.street }}'s Buyers</h3>
+    {% if property.buyers.count %}
+      {% for buyer in property.buyers.all %}
+       <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            {{ buyer.name }} - <a href="">{{ buyer.number }}</a>
+          </span>
+        </div>
+       </div>
+      {% endfor %}
+    {% else %}
+       <h5>No Buyers Yet!</h5>
+    {% endif %}
+  </div>
+  <div class="col s6">
+    <h3>Available Buyers</h3>
+    {% if buyers.count %}
+      {% for buyer in buyers.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ buyer.name }} - <a href="">{{ buyer.number }}</a>
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_buyer' property.id buyer.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{ property.street }} already has all Buyers available</h5>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectEl = document.getElementById('id_showing');
+  M.FormSelect.init(selectEl);
+</script>
 
 {% endblock %}

@@ -6,7 +6,7 @@
 {% for property in properties %}
   <div class="card">
     <div class="card-content">
-      <span class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.street }}</a></span>
+      <span class="card-title"><a href="{% url 'properties_detail' property.id %}">{{ property.street }}</a></span>
       <p>This is a {{property.units}} unit {{ property.type }}</p>
       <p>Price: ${{ property.price }}</p>
       <p>City: {{ property.city }}</p>
