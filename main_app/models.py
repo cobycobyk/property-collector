@@ -1,6 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from django.views.generic.list import ListView
 
 SHOWINGS = (
   ('M', 'Morning'),
@@ -45,3 +49,4 @@ class Showing(models.Model):
   
   class Meta:
     ordering = ['-date']
+

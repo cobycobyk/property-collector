@@ -44,3 +44,21 @@ def add_showing(request, property_id):
 def assoc_buyer(request, property_id, buyer_id):
   Property.objects.get(id=property_id).buyers.add(buyer_id)
   return redirect('properties_detail', property_id=property_id)
+
+class BuyerList(ListView):
+  model = Buyer
+
+class BuyerDetail(DetailView):
+  model = Buyer
+
+class BuyerCreate(CreateView):
+  model = Buyer
+  fields = '__all__'
+
+class BuyerUpdate(UpdateView):
+  model = Buyer
+  fields = '__all__'
+
+class BuyerDelete(DeleteView):
+  model = Buyer
+  success_url = '/buyers/'
